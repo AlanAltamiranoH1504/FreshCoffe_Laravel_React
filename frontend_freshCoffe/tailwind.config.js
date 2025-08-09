@@ -5,7 +5,11 @@ export default {
         "./src/**/*.{js,ts,tsx,jsx}"
     ],
     theme: {
-        extend: {},
+        extend: {
+            fontFamily: {
+                fjalla: ['"Fjalla One"', "sans-serif"]
+            },
+        },
     },
     plugins: [],
 }
