@@ -1,11 +1,12 @@
 import type {Producto} from "../../types";
 import {formatoMoneda} from "../../utils";
-import {toast} from "react-toastify";
+import {useAppStore} from "../../store/useAppStore.tsx";
 
 type ProductoDetallesProps = {
     producto: Producto
 }
 const ProductoDetalles = ({producto}: ProductoDetallesProps) => {
+    const {showModal, showProductoDetalles} = useAppStore();
     return (
         <>
             <div className="border p-3 shadow bg-white">
@@ -21,7 +22,8 @@ const ProductoDetalles = ({producto}: ProductoDetallesProps) => {
 
                 <button
                     onClick={() => {
-                        toast.success("Producto agregado a la orden!");
+                        showProductoDetalles(producto.id);
+                        showModal();
                     }}
                     className="p-2 border rounded-lg bg-amber-950 text-center text-white w-full hover:bg-amber-800 transition-colors duration-500 uppercase font-fjalla text-lg"
                     type="button">Agregar a Orden</button>

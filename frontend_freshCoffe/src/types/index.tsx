@@ -15,8 +15,21 @@ export type Categoria = {
 }
 export type Producto = {
     nombre: string,
+    // descripcion: string,
     precio: number,
     imagen: string,
     categoria_id: number,
     id: number
+}
+export type FormSaveProductoToOrden = {
+    cantidad: number
+}
+
+export type ProductoToAddInOrden = {
+    nombre: string,
+    precio: number,
+    imagen: string,
+    categoria_id: number,
+    cantidad: number,
+    total: number
 }

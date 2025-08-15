@@ -1,9 +1,23 @@
 import {productos} from "../../data/Productos.ts";
 import ProductoDetalles from "../../components/productos/ProductoDetalles.tsx";
 import {useAppStore} from "../../store/useAppStore.tsx";
+import Modal from "react-modal"
+import ModalProducto from "../../components/productos/ModalProducto.tsx";
+
+const customStyles = {
+    content: {
+        top: "50%",
+        left: "50%",
+        right: "auto",
+        bottom: "auto",
+        marginRight: "-50%",
+        transform: "translate(-50%, -50%)",
+    },
+};
+Modal.setAppElement("#root");
 
 const AdminView = () => {
-    const {productosFiltrados, categoriaSeleccionada} = useAppStore();
+    const {productosFiltrados, categoriaSeleccionada, statusModal, showModal} = useAppStore();
 
     return (
         <>
@@ -21,6 +35,20 @@ const AdminView = () => {
                         ))
                     )}
                 </div>
+                {statusModal && (
+                    <Modal
+                        isOpen={statusModal}
+                        style={customStyles}
+                    >
+                        <ModalProducto/>
+                        <button
+                            className="w-full mt-4 p-2 rounded-lg bg-red-600 hover:bg-red-800 transition-colors duration-500 text-xl text-white uppercase font-fjalla"
+                            onClick={() => {
+                                showModal();
+                            }}
+                        >Cancelar Pedido</button>
+                    </Modal>
+                )}
             </div>
         </>
     );
