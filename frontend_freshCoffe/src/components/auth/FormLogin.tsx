@@ -50,7 +50,7 @@ const FormLogin = () => {
                     <Link to="/auth/olvide-password">¿Olvidaste tu password? Recuperala</Link>
                 </div>
 
-                <input type="submit" value="Crear Cuenta"
+                <input type="submit" value="Iniciar Sesión"
                        className="border p-2 w-full font-fjalla rounded-lg uppercase text-lg bg-amber-950 text-white hover:bg-amber-800 transition-colors duration-500 cursor-pointer"/>
             </form>
         </>

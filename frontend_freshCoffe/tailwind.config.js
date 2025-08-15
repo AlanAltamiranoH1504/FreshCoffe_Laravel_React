@@ -7,7 +7,11 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                fjalla: ['"Fjalla One"', "sans-serif"]
+                borel: ['"Borel"', "cursive"],
+                fjalla: ['"Fjalla One"', "sans-serif"],
+                lobster: ['"Lobster Two"', "cursive"],
+                michroma: ['"Michroma"', "sans-serif"],
+                orbitron: ['"Orbitron"', "sans-serif"],
             },
         },
     },
