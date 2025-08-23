@@ -16,7 +16,7 @@ const AppRouter = () => {
                     </Route>
 
                     <Route element={<AppLayout/>}>
-                        <Route path="/admin" element={<AdminView/>}></Route>
+                        <Route path="/administracion" element={<AdminView/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

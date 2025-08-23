@@ -47,10 +47,24 @@ export const useAppStore = create<AppState>()(
             }));
         },
         addProductoInOrden: (producto: ProductoToAddInOrden) => {
-            set((state) => ({
-                ...state,
-                productosDeOrden: [...state.productosDeOrden, producto]
-            }))
+            set((state) => {
+                const productoExistente = state.productosDeOrden.find((p) =>
+                    p.imagen === producto.imagen
+                );
+
+                let nuevosProductos: ProductoToAddInOrden[];
+
+                if (productoExistente) {
+                    nuevosProductos = state.productosDeOrden.map((p) =>
+                        p.imagen === producto.imagen ? {...p, cantidad: p.cantidad + 1, total: p.total + producto.precio} : p
+                    );
+                } else {
+                    nuevosProductos = [...state.productosDeOrden, producto];
+                }
+
+                return {productosDeOrden: nuevosProductos};
+            });
         }
+
     }))
 );
