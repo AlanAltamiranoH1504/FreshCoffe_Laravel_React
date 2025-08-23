@@ -15,6 +15,8 @@ type AppState = {
     showModal: () => void;
     showProductoDetalles: (productoId: Producto["id"]) => void;
     addProductoInOrden: (producto: ProductoToAddInOrden) => void;
+    deleteOrdenProducto: (productoId: Producto["imagen"]) => void;
+    incrementProductoQuantity: (producto: ProductoToAddInOrden) => void;
 };
 
 export const useAppStore = create<AppState>()(
@@ -56,7 +58,11 @@ export const useAppStore = create<AppState>()(
 
                 if (productoExistente) {
                     nuevosProductos = state.productosDeOrden.map((p) =>
-                        p.imagen === producto.imagen ? {...p, cantidad: p.cantidad + 1, total: p.total + producto.precio} : p
+                        p.imagen === producto.imagen ? {
+                            ...p,
+                            cantidad: p.cantidad + 1,
+                            total: p.total + producto.precio
+                        } : p
                     );
                 } else {
                     nuevosProductos = [...state.productosDeOrden, producto];
@@ -64,7 +70,26 @@ export const useAppStore = create<AppState>()(
 
                 return {productosDeOrden: nuevosProductos};
             });
+        },
+        deleteOrdenProducto: (imagenProducto) => {
+            set((state) => {
+                const productosActualizados = state.productosDeOrden.filter((p) => {
+                    return p.imagen !== imagenProducto
+                });
+                return {productosDeOrden: productosActualizados};
+            })
+        },
+        incrementProductoQuantity: (producto) => {
+            set((state) => {
+                let productoActualizados = state.productosDeOrden.map((p) =>
+                    p.imagen === producto.imagen ? {
+                        ...p,
+                        cantidad: p.cantidad + 1,
+                        total: p.total + producto.precio
+                    } : p
+                )
+                return {productosDeOrden: productoActualizados};
+            })
         }
-
     }))
 );
