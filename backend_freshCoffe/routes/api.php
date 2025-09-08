@@ -6,3 +6,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix("categorias")->group(function () {
     Route::get("/", [\App\Http\Controllers\CategoriaController::class, "index"]);
 });
+
+Route::prefix("productos")->group(function () {
+    Route::get("/", [\App\Http\Controllers\ProductoController::class, "index"]);
+});
