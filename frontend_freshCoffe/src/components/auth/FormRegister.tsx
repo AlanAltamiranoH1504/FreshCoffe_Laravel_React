@@ -1,13 +1,28 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import type {FormRegistro} from "../../types";
+import {useMutation} from "@tanstack/react-query";
+import {registerUsuarioPOST} from "../../services/UsuarioService.ts";
+import {toast} from "react-toastify";
 
 const FormRegister = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<FormRegistro>();
-
+    const navigate = useNavigate();
     function submitFormulario(data: FormRegistro) {
-        console.log(data)
+        registroUsuarioMutation.mutate(data);
     }
+
+    const registroUsuarioMutation = useMutation({
+        mutationKey: ["registroUsuario"],
+        mutationFn: registerUsuarioPOST,
+        onSuccess: () => {
+            toast.success("Usuario registrado correctamente!");
+            navigate("/auth/login");
+        },
+        onError: (error) => {
+            toast.error(error.response.data.message);
+        }
+    })
 
     return (
         <>

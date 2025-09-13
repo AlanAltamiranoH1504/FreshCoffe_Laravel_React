@@ -1,13 +1,29 @@
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import type {FormLogin} from "../../types";
+import {useMutation} from "@tanstack/react-query";
+import {loginUsuarioPOST} from "../../services/UsuarioService.ts";
+import {toast} from "react-toastify";
 
 const FormLogin = () => {
     const {register, handleSubmit, formState: {errors}} = useForm<FormLogin>();
+    const navigate = useNavigate();
 
     function submitFormulario(data: FormLogin) {
-        console.log(data)
+        loginUsuarioMutation.mutate(data);
     }
+
+    const loginUsuarioMutation = useMutation({
+        mutationKey: ["loginUsuario"],
+        mutationFn: loginUsuarioPOST,
+        onSuccess: (data) => {
+            navigate("/administracion");
+            localStorage.setItem("token_sanctum_freshcoffe", data.token);
+        },
+        onError: (error) => {
+            toast.error(error.response.data.error);
+        }
+    })
 
     return (
         <>

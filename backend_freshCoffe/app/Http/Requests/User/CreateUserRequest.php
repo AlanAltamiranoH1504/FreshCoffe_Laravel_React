@@ -23,6 +23,7 @@ class CreateUserRequest extends FormRequest
     {
         return [
             "name" => "required|string|max:255",
+            "apellidos" => "required|string|max:255",
             "email" => "required|string|email|max:255|unique:users,email",
             "password" => "required|string|min:6"
         ];
@@ -34,6 +35,10 @@ class CreateUserRequest extends FormRequest
             "name.required" => "El nombre es obligatorio",
             "name.string" => "El nombre debe ser una cadena de caracteres",
             "name.max" => "El nombre no puede superar los 255 caracteres",
+
+            "apellidos.required" => "Los apellidos son obligatorios",
+            "apellidos.string" => "Los apellidos deben ser una cadena de caracteres",
+            "apellidos.max" => "Los apellidos no puede superar los 255 caracteres",
 
             "email.required" => "El email es obligatorio",
             "email.string" => "El email debe ser una cadena de caracteres",
