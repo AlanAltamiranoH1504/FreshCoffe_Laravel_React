@@ -1,5 +1,4 @@
 import type {FormRegistro, FormLogin} from "../types";
-import axios from "axios";
 import {ClienteAxios} from "../axios/ClienteAxios.ts";
 import {responseLoginUserAPI, responseRegisterUserAPI} from "../schemas/UsuariosSchemas.ts";
 
@@ -20,7 +19,7 @@ export async function loginUsuarioPOST(data: FormLogin) {
         const responseAPI = await ClienteAxios.post("/api/usuarios/get_token", data);
         const resultAPI = responseLoginUserAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
-            return resultAPI.data;
+            localStorage.setItem("token_sanctum_freshcoffe", resultAPI.data.token);
         }
     } catch (e) {
         throw e;

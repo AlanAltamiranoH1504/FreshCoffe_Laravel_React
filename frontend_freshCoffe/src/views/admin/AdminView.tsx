@@ -1,8 +1,9 @@
-import {productos} from "../../data/Productos.ts";
+// import {productos} from "../../data/Productos.ts";
 import ProductoDetalles from "../../components/productos/ProductoDetalles.tsx";
 import {useAppStore} from "../../store/useAppStore.tsx";
 import Modal from "react-modal"
 import ModalProducto from "../../components/productos/ModalProducto.tsx";
+import {useEffect} from "react";
 
 const customStyles = {
     content: {
@@ -17,7 +18,11 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const AdminView = () => {
-    const {productosFiltrados, categoriaSeleccionada, statusModal, showModal} = useAppStore();
+    const {productos, getProductos, productosFiltrados, categoriaSeleccionada, statusModal, showModal} = useAppStore();
+
+    useEffect(() => {
+        getProductos();
+    }, [getProductos])
 
     return (
         <>

@@ -1,16 +1,17 @@
 import {create} from "zustand";
 import {devtools} from "zustand/middleware";
 import type {Categoria, Producto, ProductoToAddInOrden} from "../types";
-import {productos} from "../data/Productos.ts";
+import {findAllProductosGET} from "../services/ProductosService.ts";
 
 type AppState = {
+    productos: Producto[]
     productosFiltrados: Producto[];
     categoriaSeleccionada: number;
     statusModal: boolean;
     productoSeleccionado: Producto | null;
     productosDeOrden: ProductoToAddInOrden[]
 
-
+    getProductos: () => Promise<void>;
     addCategoria: (categoriaId: Categoria["id"]) => void;
     showModal: () => void;
     showProductoDetalles: (productoId: Producto["id"]) => void;
@@ -21,18 +22,23 @@ type AppState = {
 
 export const useAppStore = create<AppState>()(
     devtools((set) => ({
+        productos: [],
         productosFiltrados: [],
         categoriaSeleccionada: 0,
         statusModal: false,
         productosDeOrden: [],
 
-        addCategoria: (categoriaId) => {
-            const productosFiltrados: Producto[] = productos.filter((producto) => {
-                return producto.categoria_id === categoriaId
+
+        getProductos: async () => {
+            const productosF: Producto[] = await findAllProductosGET();
+            set({
+                productos: productosF
             });
-            set(() => ({
+        },
+        addCategoria: (categoriaId) => {
+            set((state) => ({
                 categoriaSeleccionada: categoriaId,
-                productosFiltrados: productosFiltrados
+                productosFiltrados: state.productos.filter((producto) => producto.categoria_id === categoriaId)
             }));
         },
         showModal: () => {
@@ -41,11 +47,8 @@ export const useAppStore = create<AppState>()(
             }));
         },
         showProductoDetalles: (productoId) => {
-            const productoSeleccionado = productos.filter((producto) => {
-                return producto.id === productoId
-            })[0];
-            set(() => ({
-                productoSeleccionado: productoSeleccionado
+            set((state) => ({
+                productoSeleccionado: state.productos.find((producto) => producto.id === productoId)
             }));
         },
         addProductoInOrden: (producto: ProductoToAddInOrden) => {

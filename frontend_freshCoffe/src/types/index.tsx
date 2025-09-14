@@ -1,3 +1,6 @@
+import {z} from "zod";
+import type {responseLoginUserAPI} from "../schemas/UsuariosSchemas.ts";
+
 export type FormRegistro = {
     name: string,
     apellidos: string,
@@ -14,12 +17,12 @@ export type Categoria = {
     id: number
 }
 export type Producto = {
+    id: number,
     nombre: string,
-    // descripcion: string,
     precio: number,
     imagen: string,
     categoria_id: number,
-    id: number
+    disponible: number
 }
 export type FormSaveProductoToOrden = {
     cantidad: number
@@ -33,3 +36,6 @@ export type ProductoToAddInOrden = {
     cantidad: number,
     total: number
 }
+
+// Inferencias
+export type LoginType = z.infer<typeof responseLoginUserAPI>

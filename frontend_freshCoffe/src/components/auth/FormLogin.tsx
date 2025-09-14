@@ -16,11 +16,13 @@ const FormLogin = () => {
     const loginUsuarioMutation = useMutation({
         mutationKey: ["loginUsuario"],
         mutationFn: loginUsuarioPOST,
-        onSuccess: (data) => {
+        onSuccess: () => {
             navigate("/administracion");
-            localStorage.setItem("token_sanctum_freshcoffe", data.token);
+            // @ts-ignore
+            // localStorage.setItem("token_sanctum_freshcoffe", data.token!);
         },
         onError: (error) => {
+            // @ts-ignore
             toast.error(error.response.data.error);
         }
     })

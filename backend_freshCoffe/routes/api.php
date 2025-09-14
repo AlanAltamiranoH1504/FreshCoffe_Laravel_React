@@ -8,10 +8,13 @@ Route::prefix("usuarios")->group(function () {
     Route::post("/get_token", [\App\Http\Controllers\UserController::class, "get_token"]);
 });
 
-Route::prefix("categorias")->group(function () {
-    Route::get("/", [\App\Http\Controllers\CategoriaController::class, "index"]);
-});
 
-Route::prefix("productos")->group(function () {
-    Route::get("/", [\App\Http\Controllers\ProductoController::class, "index"]);
+//Rutas protegidas por sanctum
+Route::middleware(["auth:sanctum"])->group(function () {
+    Route::prefix("categorias")->group(function () {
+        Route::get("/", [\App\Http\Controllers\CategoriaController::class, "index"]);
+    });
+    Route::prefix("productos")->group(function () {
+        Route::get("/", [\App\Http\Controllers\ProductoController::class, "index"]);
+    });
 });
