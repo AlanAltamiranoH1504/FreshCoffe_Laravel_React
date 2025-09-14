@@ -10,3 +10,7 @@ export const responseLoginUserAPI = z.object({
     token: z.string(),
     expiration: z.string()
 });
+
+export const responseLogoutAPI = z.object({
+    status: z.boolean(),
+});

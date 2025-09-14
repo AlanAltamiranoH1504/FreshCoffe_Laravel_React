@@ -1,6 +1,6 @@
 import type {FormRegistro, FormLogin} from "../types";
 import {ClienteAxios} from "../axios/ClienteAxios.ts";
-import {responseLoginUserAPI, responseRegisterUserAPI} from "../schemas/UsuariosSchemas.ts";
+import {responseLoginUserAPI, responseLogoutAPI, responseRegisterUserAPI} from "../schemas/UsuariosSchemas.ts";
 
 export async function registerUsuarioPOST(data: FormRegistro) {
     try {
@@ -20,6 +20,23 @@ export async function loginUsuarioPOST(data: FormLogin) {
         const resultAPI = responseLoginUserAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
             localStorage.setItem("token_sanctum_freshcoffe", resultAPI.data.token);
+        }
+    } catch (e) {
+        throw e;
+    }
+}
+
+export async function logoutPOST(data: number) {
+    try {
+        const responseAPI = await ClienteAxios.post("/api/logout", data, {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token_sanctum_freshcoffe"),
+            }
+            // withCredentials: true
+        });
+        const resultAPI = responseLogoutAPI.safeParse(responseAPI.data);
+        if (resultAPI.success) {
+            localStorage.removeItem("token_sanctum_freshcoffe");
         }
     } catch (e) {
         throw e;
