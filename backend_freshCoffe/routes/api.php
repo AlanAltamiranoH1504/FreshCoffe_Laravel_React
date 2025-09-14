@@ -8,16 +8,16 @@ Route::prefix("usuarios")->group(function () {
     Route::post("/get_token", [\App\Http\Controllers\UserController::class, "get_token"]);
 
 });
-
-
 //Rutas protegidas por sanctum
 Route::middleware(["auth:sanctum"])->group(function () {
+    Route::post("/logout", [\App\Http\Controllers\UserController::class, "logout"]);
     Route::prefix("categorias")->group(function () {
         Route::get("/", [\App\Http\Controllers\CategoriaController::class, "index"]);
     });
     Route::prefix("productos")->group(function () {
         Route::get("/", [\App\Http\Controllers\ProductoController::class, "index"]);
     });
-
-    Route::post("/logout", [\App\Http\Controllers\UserController::class, "logout"]);
+    Route::prefix("pedidos")->group(function () {
+        Route::post("/", [\App\Http\Controllers\PedidoController::class, "store"]);
+    });
 });
