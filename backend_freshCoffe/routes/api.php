@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\PedidoController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("usuarios")->group(function () {
@@ -19,5 +19,6 @@ Route::middleware(["auth:sanctum"])->group(function () {
     });
     Route::prefix("pedidos")->group(function () {
         Route::post("/", [\App\Http\Controllers\PedidoController::class, "store"]);
+        Route::get("/", [PedidoController::class, "get_ordenes"]);
     });
 });

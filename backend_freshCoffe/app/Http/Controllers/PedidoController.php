@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Pedido\CreatePedidoRequest;
 use App\Models\pedido;
 use App\Models\PedidoProducto;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,9 +16,13 @@ class PedidoController extends Controller
     {
         $validate = $request->validated();
         try {
+            $user = User::where("id", auth()->id())
+                ->first();
+            $name_user = $user->name . " " . $user->apellidos;
             $id_pedido = DB::table("pedidos")->insertGetId([
                 "total" => $request["total"],
                 "user_id" => auth()->id(),
+                "nombre" => $name_user,
                 "created_at" => Carbon::now(),
                 "updated_at" => Carbon::now()
             ]);
@@ -45,6 +50,24 @@ class PedidoController extends Controller
             return response()->json([
                 "status" => false,
                 "message" => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function get_ordenes()
+    {
+        try {
+            $ordenes = pedido::where("status", 0)
+                ->with("pedidos_productos", "pedidos_productos.producto")
+                ->orderBy("created_at", "desc")
+                ->get();
+
+            return response()->json($ordenes, 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => true,
+                "message" => "Error en busqueda de ordenes",
+                "error" => $th->getMessage()
             ], 500);
         }
     }
