@@ -2,6 +2,7 @@ import {create} from "zustand";
 import {devtools} from "zustand/middleware";
 import type {Categoria, Producto, ProductoToAddInOrden} from "../types";
 import {findAllProductosGET} from "../services/ProductosService.ts";
+import { logoutPOST } from "../services/UsuarioService.ts";
 
 type AppState = {
     productos: Producto[]
@@ -18,6 +19,8 @@ type AppState = {
     addProductoInOrden: (producto: ProductoToAddInOrden) => void;
     deleteOrdenProducto: (productoId: Producto["imagen"]) => void;
     incrementProductoQuantity: (producto: ProductoToAddInOrden) => void;
+    resetPedido: () => void;
+    logout: () => Promise<void>;
 };
 
 export const useAppStore = create<AppState>()(
@@ -93,6 +96,14 @@ export const useAppStore = create<AppState>()(
                 )
                 return {productosDeOrden: productoActualizados};
             })
+        },
+        resetPedido: () => {
+            set((state) => {
+                return {productosDeOrden: []}
+            })
+        },
+        logout: async () => {
+            const salida = await logoutPOST(1);
         }
     }))
 );

@@ -9,7 +9,7 @@ import { logoutPOST } from "../services/UsuarioService.ts";
 import { useNavigate } from "react-router-dom";
 
 const Resumen = () => {
-    const {productosDeOrden} = useAppStore();
+    const {productosDeOrden, resetPedido} = useAppStore();
     const navigate = useNavigate();
     const costoTotalPedido = productosDeOrden.reduce((acumulador, producto) => {
         return acumulador = acumulador + producto.total;
@@ -28,7 +28,8 @@ const Resumen = () => {
         mutationFn: savePedidoPOST,
         onSuccess: () => {
             toast.success("Pedido solicitado correctamente. Espera algunos minutos!");
-            logoutMutation.mutate(1);
+            resetPedido();
+            // logoutMutation.mutate(1);
         },
         onError: err => {
             // @ts-ignore

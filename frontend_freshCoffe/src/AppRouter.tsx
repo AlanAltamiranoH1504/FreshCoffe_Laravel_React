@@ -4,6 +4,9 @@ import AuthLayout from "./layout/AuthLayout.tsx";
 import AppLayout from "./layout/AppLayout.tsx";
 import AdminView from "./views/admin/AdminView.tsx";
 import LoginView from "./views/auth/LoginView.tsx";
+import CocinaView from "./views/cocina/CocinaView.tsx";
+import CocinaLayout from "./layout/CocinaLayout.tsx";
+import ProductosView from "./views/cocina/ProductosView.tsx";
 
 const AppRouter = () => {
     return (
@@ -17,6 +20,11 @@ const AppRouter = () => {
 
                     <Route element={<AppLayout/>}>
                         <Route path="/administracion" element={<AdminView/>}></Route>
+                    </Route>
+
+                    <Route element={<CocinaLayout/>}>
+                        <Route path="/cocina" element={<CocinaView/>}></Route>
+                        <Route path="/cocina/productos" element={<ProductosView/>}></Route>
                     </Route>
                 </Routes>
             </BrowserRouter>

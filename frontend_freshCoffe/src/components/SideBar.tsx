@@ -3,8 +3,10 @@ import {useMutation, useQuery} from "@tanstack/react-query";
 import {findAllCategoriasGET} from "../services/CategoriaService.ts";
 import {logoutPOST} from "../services/UsuarioService.ts";
 import {useNavigate} from "react-router-dom";
+import { useAppStore } from "../store/useAppStore.tsx";
 
 const SideBar = () => {
+    const {resetPedido} = useAppStore();
     const navigate = useNavigate();
     const {data, isLoading, isError} = useQuery({
         queryKey: ["findAllCategorias"],
@@ -54,6 +56,9 @@ const SideBar = () => {
                 </div>
                 <div className="my-5 p-5 space-y-3">
                     <button
+                        onClick={() => {
+                            resetPedido();
+                        }}
                         type="button"
                         className="w-full border p-2 bg-amber-950 hover:bg-amber-800 transition-colors duration-500 cursor-pointer rounded-lg text-white uppercase font-fjalla"
                     >Cancelar Orden

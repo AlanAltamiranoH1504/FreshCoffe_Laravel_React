@@ -8,7 +8,8 @@ export const responseRegisterUserAPI = z.object({
 export const responseLoginUserAPI = z.object({
     status: z.boolean(),
     token: z.string(),
-    expiration: z.string()
+    expiration: z.string(),
+    admin: z.number()
 });
 
 export const responseLogoutAPI = z.object({

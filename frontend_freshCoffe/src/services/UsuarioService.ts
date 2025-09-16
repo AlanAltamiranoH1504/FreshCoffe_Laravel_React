@@ -20,6 +20,7 @@ export async function loginUsuarioPOST(data: FormLogin) {
         const resultAPI = responseLoginUserAPI.safeParse(responseAPI.data);
         if (resultAPI.success) {
             localStorage.setItem("token_sanctum_freshcoffe", resultAPI.data.token);
+            return responseAPI.data;
         }
     } catch (e) {
         throw e;

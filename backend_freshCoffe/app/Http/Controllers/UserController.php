@@ -45,7 +45,8 @@ class UserController extends Controller
             return response()->json([
                 "status" => true,
                 "token" => $token,
-                "expiration" => Carbon::now()->addMinutes(60)->toDateTimeString()
+                "expiration" => Carbon::now()->addMinutes(60)->toDateTimeString(),
+                "admin" => $user->admin
             ]);
         } catch (\Throwable $th) {
             return response()->json([
