@@ -29,6 +29,7 @@ export type FormSaveProductoToOrden = {
 }
 
 export type ProductoToAddInOrden = {
+    id: number,
     nombre: string,
     precio: number,
     imagen: string,

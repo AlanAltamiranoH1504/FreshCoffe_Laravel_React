@@ -2,12 +2,35 @@ import {useAppStore} from "../store/useAppStore.tsx";
 import {formatoMoneda} from "../utils";
 import {useEffect} from "react";
 import ResumenProducto from "./ResumenProducto.tsx";
+import {useMutation} from "@tanstack/react-query";
+import {savePedidoPOST} from "../services/PedidosService.ts";
+import {toast} from "react-toastify";
 
 const Resumen = () => {
     const {productosDeOrden} = useAppStore();
     const costoTotalPedido = productosDeOrden.reduce((acumulador, producto) => {
         return acumulador = acumulador + producto.total;
     }, 0);
+
+    function savePedido(e: { preventDefault: () => void; }) {
+        e.preventDefault();
+        savePedidoMutation.mutate({
+            total: costoTotalPedido,
+            productos: productosDeOrden
+        });
+    }
+
+    const savePedidoMutation = useMutation({
+        mutationKey: ["savePedido"],
+        mutationFn: savePedidoPOST,
+        onSuccess: () => {
+            toast.success("Pedido solicitado correctamente");
+        },
+        onError: err => {
+            // @ts-ignore
+            toast.error(err.response.data.message);
+        }
+    })
 
     useEffect(() => {
 
@@ -22,7 +45,7 @@ const Resumen = () => {
                 <div className="py-10">
                     {productosDeOrden.length === 0 ? (
                         <h2 className="text-center text-2xl font-semibold">Pedido Vacio</h2>
-                    ): (
+                    ) : (
                         productosDeOrden.map((producto) => (
                             <ResumenProducto
                                 producto={producto}
@@ -33,13 +56,16 @@ const Resumen = () => {
                 {productosDeOrden.length > 0 ? (
                     <>
                         <p className="text-3xl text-amber-500 font-fjalla text-center">Total {formatoMoneda(costoTotalPedido)}</p>
-                        <form className="w-full">
+                        <form className="w-full"
+                              onSubmit={savePedido}
+                        >
                             <div className="mt-5 flex justify-center">
-                                <input type="submit" value="Realizar pedido" className="bg-amber-950 text-white text-center py-2 w-full rounded-lg font-fjalla hover:bg-amber-800 transition-colors duration-500 cursor-pointer"/>
+                                <input type="submit" value="Realizar pedido"
+                                       className="bg-amber-950 text-white text-center py-2 w-full rounded-lg font-fjalla hover:bg-amber-800 transition-colors duration-500 cursor-pointer"/>
                             </div>
                         </form>
                     </>
-                ): (
+                ) : (
                     <>
                     </>
                 )}

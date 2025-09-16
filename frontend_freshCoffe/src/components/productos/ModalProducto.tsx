@@ -7,9 +7,9 @@ import {toast} from "react-toastify";
 const ModalProducto = () => {
     const {productoSeleccionado, showModal, addProductoInOrden} = useAppStore();
     const {register, handleSubmit, formState: {errors}} = useForm<FormSaveProductoToOrden>();
-
     function addProductoToOrden(data: FormSaveProductoToOrden) {
         const productoToAddInOrden: ProductoToAddInOrden = {
+            id: productoSeleccionado!.id,
             nombre: productoSeleccionado!.nombre,
             imagen: productoSeleccionado!.imagen,
             precio: productoSeleccionado!.precio,
