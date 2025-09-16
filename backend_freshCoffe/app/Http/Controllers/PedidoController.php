@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\OrderCompletedRequest;
 use App\Http\Requests\Pedido\CreatePedidoRequest;
 use App\Models\pedido;
 use App\Models\PedidoProducto;
@@ -67,6 +68,34 @@ class PedidoController extends Controller
             return response()->json([
                 "status" => true,
                 "message" => "Error en busqueda de ordenes",
+                "error" => $th->getMessage()
+            ], 500);
+        }
+    }
+
+    public function set_order_completed(OrderCompletedRequest $request)
+    {
+        $validate = $request->validated();
+        try {
+            $order_to_update = pedido::where("id", $validate["id"])
+                ->where("status", 0)
+                ->first();
+            if (!$order_to_update) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Orden no encontrada"
+                ], 404);
+            }
+            $order_to_update->status = 1;
+            $order_to_update->save();
+            return response()->json([
+                "status" => true,
+                "message" => "Orden actualizada correctamente"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => false,
+                "message" => "Error en completado de orden",
                 "error" => $th->getMessage()
             ], 500);
         }

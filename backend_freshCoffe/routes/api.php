@@ -20,5 +20,6 @@ Route::middleware(["auth:sanctum"])->group(function () {
     Route::prefix("pedidos")->group(function () {
         Route::post("/", [\App\Http\Controllers\PedidoController::class, "store"]);
         Route::get("/", [PedidoController::class, "get_ordenes"]);
+        Route::post("/set_order_completed", [PedidoController::class, "set_order_completed"]);
     });
 });

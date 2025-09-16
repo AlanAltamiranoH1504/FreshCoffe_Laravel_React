@@ -18,7 +18,7 @@ const FormLogin = () => {
         mutationFn: loginUsuarioPOST,
         onSuccess: (data) => {
             if(data.admin === 1) {
-                navigate("/cocina");
+                navigate("/cocina/ordenes");
             } else {
                 navigate("/administracion");
             }

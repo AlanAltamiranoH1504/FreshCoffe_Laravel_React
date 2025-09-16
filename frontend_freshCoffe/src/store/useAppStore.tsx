@@ -3,6 +3,8 @@ import {devtools} from "zustand/middleware";
 import type {Categoria, Producto, ProductoToAddInOrden} from "../types";
 import {findAllProductosGET} from "../services/ProductosService.ts";
 import { logoutPOST } from "../services/UsuarioService.ts";
+import { orderCompletedPOST } from "../services/PedidosService.ts";
+import { id } from "zod/locales";
 
 type AppState = {
     productos: Producto[]
@@ -21,6 +23,7 @@ type AppState = {
     incrementProductoQuantity: (producto: ProductoToAddInOrden) => void;
     resetPedido: () => void;
     logout: () => Promise<void>;
+    orderCompleted: (productoId: Producto["id"]) => Promise<void>;
 };
 
 export const useAppStore = create<AppState>()(
@@ -104,6 +107,9 @@ export const useAppStore = create<AppState>()(
         },
         logout: async () => {
             const salida = await logoutPOST(1);
+        },
+        orderCompleted: async (idOrden) => {
+            await orderCompletedPOST(idOrden);
         }
     }))
 );

@@ -23,7 +23,7 @@ const AppRouter = () => {
                     </Route>
 
                     <Route element={<CocinaLayout/>}>
-                        <Route path="/cocina" element={<CocinaView/>}></Route>
+                        <Route path="/cocina/ordenes" element={<CocinaView/>}></Route>
                         <Route path="/cocina/productos" element={<ProductosView/>}></Route>
                     </Route>
                 </Routes>
