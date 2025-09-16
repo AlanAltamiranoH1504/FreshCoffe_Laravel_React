@@ -23,6 +23,9 @@ class CreatePedidoRequest extends FormRequest
     {
         return [
             "total" => "required|numeric|min:1",
+            "productos" => "required|array",
+            "productos.*.id" => "required|integer|exists:productos,id",
+            "productos.*.cantidad" => "required|integer|min:1"
         ];
     }
 
@@ -32,6 +35,17 @@ class CreatePedidoRequest extends FormRequest
             "total.required" => "El total del pedido es obligatorio",
             "total.numeric" => "El total debe ser una cifra numerica",
             "total.min" => "El total debe ser mayor a cero",
+
+            "productos.required" => "Los productos de la orden son obligatorios",
+            "productos.array" => "Debe ser una lista de productos",
+
+            "productos.*.id.required" => "El id del producto es obligatorio",
+            "productos.*.id.integer" => "Producto no valido",
+            "productos.*.exists" => "Id de producto no valido",
+
+            "productos.*.cantidad.required" => "Cantidad obligatoria",
+            "productos.*.cantidad.integer" => "Cantidad no valida",
+            "productos.*.cantidad.min" => "La cantidad minima debe ser 1",
         ];
     }
 }

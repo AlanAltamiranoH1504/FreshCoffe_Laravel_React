@@ -5,9 +5,12 @@ import ResumenProducto from "./ResumenProducto.tsx";
 import {useMutation} from "@tanstack/react-query";
 import {savePedidoPOST} from "../services/PedidosService.ts";
 import {toast} from "react-toastify";
+import { logoutPOST } from "../services/UsuarioService.ts";
+import { useNavigate } from "react-router-dom";
 
 const Resumen = () => {
     const {productosDeOrden} = useAppStore();
+    const navigate = useNavigate();
     const costoTotalPedido = productosDeOrden.reduce((acumulador, producto) => {
         return acumulador = acumulador + producto.total;
     }, 0);
@@ -24,13 +27,22 @@ const Resumen = () => {
         mutationKey: ["savePedido"],
         mutationFn: savePedidoPOST,
         onSuccess: () => {
-            toast.success("Pedido solicitado correctamente");
+            toast.success("Pedido solicitado correctamente. Espera algunos minutos!");
+            logoutMutation.mutate(1);
         },
         onError: err => {
             // @ts-ignore
             toast.error(err.response.data.message);
         }
-    })
+    });
+
+    const logoutMutation = useMutation({
+        mutationKey: ["logoutPostPedido"],
+        mutationFn: logoutPOST,
+        onSuccess: () => {
+            navigate("/auth/login")
+        }
+    });
 
     useEffect(() => {
 

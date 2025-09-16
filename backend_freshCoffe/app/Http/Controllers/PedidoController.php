@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
-    public function store(Request $request)
+    public function store(CreatePedidoRequest $request)
     {
+        $validate = $request->validated();
         try {
             $id_pedido = DB::table("pedidos")->insertGetId([
                 "total" => $request["total"],
