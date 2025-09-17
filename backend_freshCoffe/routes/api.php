@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PedidoController;
+use App\Http\Controllers\ProductoController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("usuarios")->group(function () {
@@ -16,6 +17,8 @@ Route::middleware(["auth:sanctum"])->group(function () {
     });
     Route::prefix("productos")->group(function () {
         Route::get("/", [\App\Http\Controllers\ProductoController::class, "index"]);
+        Route::get("/get_all_products", [ProductoController::class, "get_all_products"]);
+        Route::put("/update_product_status", [ProductoController::class, "update_product_status"]);
     });
     Route::prefix("pedidos")->group(function () {
         Route::post("/", [\App\Http\Controllers\PedidoController::class, "store"]);

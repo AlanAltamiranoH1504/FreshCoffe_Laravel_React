@@ -2,14 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Products\UpdateStatusProductRequest;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         try {
@@ -25,35 +23,39 @@ class ProductoController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function get_all_products()
     {
-        //
+        try {
+            $products = Producto::all();
+            return response()->json($products, 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => false,
+                "message" => "Error en listado de productos",
+                "error" => $th->getMessage()
+            ], 500);
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Producto $producto)
+    public function update_product_status(UpdateStatusProductRequest $request)
     {
-        //
-    }
+        $validate = $request->validated();
+        try {
+            $product_to_update = Producto::where("id", $validate["id"])
+                ->first();
+            $product_to_update->disponible = !$product_to_update->disponible;
+            $product_to_update->save();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Producto $producto)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Producto $producto)
-    {
-        //
+            return response()->json([
+                "status" => true,
+                "message" => "Estado de producto actualizado"
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => false,
+                "message" => "Error en actualizacion de disponibilidad",
+                "error" => $th->getMessage()
+            ], 500);
+        }
     }
 }

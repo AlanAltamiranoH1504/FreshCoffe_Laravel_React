@@ -1,13 +1,14 @@
 import {create} from "zustand";
 import {devtools} from "zustand/middleware";
 import type {Categoria, Producto, ProductoToAddInOrden} from "../types";
-import {findAllProductosGET} from "../services/ProductosService.ts";
+import {findAllProductosGET, findAllProductssGET, update_status_productPUT} from "../services/ProductosService.ts";
 import { logoutPOST } from "../services/UsuarioService.ts";
 import { orderCompletedPOST } from "../services/PedidosService.ts";
 import { id } from "zod/locales";
 
 type AppState = {
     productos: Producto[]
+    products: Producto[],
     productosFiltrados: Producto[];
     categoriaSeleccionada: number;
     statusModal: boolean;
@@ -15,6 +16,7 @@ type AppState = {
     productosDeOrden: ProductoToAddInOrden[]
 
     getProductos: () => Promise<void>;
+    getAllProducts: () => Promise<void>,
     addCategoria: (categoriaId: Categoria["id"]) => void;
     showModal: () => void;
     showProductoDetalles: (productoId: Producto["id"]) => void;
@@ -24,11 +26,13 @@ type AppState = {
     resetPedido: () => void;
     logout: () => Promise<void>;
     orderCompleted: (productoId: Producto["id"]) => Promise<void>;
+    updateStatusProduct: (productId: Producto["id"]) => Promise<void>
 };
 
 export const useAppStore = create<AppState>()(
     devtools((set) => ({
         productos: [],
+        products: [],
         productosFiltrados: [],
         categoriaSeleccionada: 0,
         statusModal: false,
@@ -39,6 +43,12 @@ export const useAppStore = create<AppState>()(
             const productosF: Producto[] = await findAllProductosGET();
             set({
                 productos: productosF
+            });
+        },
+        getAllProducts: async () => {
+            const products = await findAllProductssGET();
+            set({
+                products: products
             });
         },
         addCategoria: (categoriaId) => {
@@ -110,6 +120,13 @@ export const useAppStore = create<AppState>()(
         },
         orderCompleted: async (idOrden) => {
             await orderCompletedPOST(idOrden);
+        },
+        updateStatusProduct: async (idProduct) => {
+            await update_status_productPUT(idProduct);
+            const products = await findAllProductosGET();
+            set({
+                products
+            });
         }
     }))
 );

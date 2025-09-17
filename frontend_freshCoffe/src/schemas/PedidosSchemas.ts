@@ -19,3 +19,8 @@ export const responseOrderCompletedPOST = z.object({
     status: z.boolean(),
     message: z.string()
 });
+
+export const responseUpdateStatusProducAPI = z.object({
+    status: z.boolean(),
+    message: z.string()
+});
