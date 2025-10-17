@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProductoController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix("usuarios")->group(function () {
@@ -9,6 +10,7 @@ Route::prefix("usuarios")->group(function () {
     Route::post("/get_token", [\App\Http\Controllers\UserController::class, "get_token"]);
 
 });
+
 //Rutas protegidas por sanctum
 Route::middleware(["auth:sanctum"])->group(function () {
     Route::post("/logout", [\App\Http\Controllers\UserController::class, "logout"]);
@@ -25,4 +27,6 @@ Route::middleware(["auth:sanctum"])->group(function () {
         Route::get("/", [PedidoController::class, "get_ordenes"]);
         Route::post("/set_order_completed", [PedidoController::class, "set_order_completed"]);
     });
+
+    Route::get("/user_in_sesion", [UserController::class, "user_in_sesion"]);
 });

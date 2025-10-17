@@ -71,4 +71,30 @@ class UserController extends Controller
             ], 500);
         }
     }
+
+    public function user_in_sesion()
+    {
+        try {
+            $user = auth()->user();
+
+            if(!$user) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "Usuario no autenticado"
+                ], 403);
+            }
+
+            return response()->json([
+                "status" => true,
+                "user" => $user
+            ]);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => false,
+                "message" => "VPE Error en indentificacion de usuario en sesion",
+                "error" => $th->getMessage()
+            ], 500);
+        }
+    }
 }
