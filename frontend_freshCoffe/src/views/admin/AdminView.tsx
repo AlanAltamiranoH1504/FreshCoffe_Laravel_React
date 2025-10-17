@@ -18,11 +18,11 @@ const customStyles = {
 Modal.setAppElement("#root");
 
 const AdminView = () => {
-    const {productos, getProductos, productosFiltrados, categoriaSeleccionada, statusModal, showModal} = useAppStore();
+    const {productos, getProductos, productosFiltrados, categoriaSeleccionada, statusModal} = useAppStore();
 
     useEffect(() => {
         getProductos();
-    }, [getProductos])
+    }, [getProductos]);
 
     return (
         <>
@@ -46,12 +46,6 @@ const AdminView = () => {
                         style={customStyles}
                     >
                         <ModalProducto/>
-                        <button
-                            className="w-full mt-4 p-2 rounded-lg bg-red-600 hover:bg-red-800 transition-colors duration-500 text-xl text-white uppercase font-fjalla"
-                            onClick={() => {
-                                showModal();
-                            }}
-                        >Cancelar Pedido</button>
                     </Modal>
                 )}
             </div>

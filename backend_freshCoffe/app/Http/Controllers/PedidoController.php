@@ -8,11 +8,13 @@ use App\Models\pedido;
 use App\Models\PedidoProducto;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class PedidoController extends Controller
 {
+    use AuthorizesRequests;
     public function store(CreatePedidoRequest $request)
     {
         $validate = $request->validated();
@@ -58,11 +60,12 @@ class PedidoController extends Controller
     public function get_ordenes()
     {
         try {
+            // $user = auth()->user();
+            $this->authorize('viewAny', pedido::class);
             $ordenes = pedido::where("status", 0)
                 ->with("pedidos_productos", "pedidos_productos.producto")
                 ->orderBy("created_at", "desc")
                 ->get();
-
             return response()->json($ordenes, 200);
         } catch (\Throwable $th) {
             return response()->json([

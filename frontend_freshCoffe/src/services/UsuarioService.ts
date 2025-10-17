@@ -1,6 +1,6 @@
 import type {FormRegistro, FormLogin} from "../types";
 import {ClienteAxios} from "../axios/ClienteAxios.ts";
-import {responseLoginUserAPI, responseLogoutAPI, responseRegisterUserAPI} from "../schemas/UsuariosSchemas.ts";
+import {responseLoginUserAPI, responseLogoutAPI, responseRegisterUserAPI, responseUserInSession} from "../schemas/UsuariosSchemas.ts";
 
 export async function registerUsuarioPOST(data: FormRegistro) {
     try {
@@ -41,5 +41,27 @@ export async function logoutPOST(data: number) {
         }
     } catch (e) {
         throw e;
+    }
+}
+
+export async function userInSessionGET() {
+    try {
+        const responseAPI = await ClienteAxios.get("/api/user_in_sesion", {
+            headers: {
+                "Authorization": "Bearer " + localStorage.getItem("token_sanctum_freshcoffe")
+            }
+        });
+        const resulAPI = responseUserInSession.safeParse(responseAPI.data);
+        console.log(resulAPI);;
+        
+        if(resulAPI.success) {
+            console.log("Entro aqui");
+            
+            return resulAPI.data;
+        }
+        console.log("No entro");
+        
+    } catch (error) {
+        throw error;
     }
 }
